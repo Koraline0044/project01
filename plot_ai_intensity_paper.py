@@ -15,7 +15,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr  # 只是为了保证scipy环境，非必须
+import scipy  # 只是为了保证scipy环境，非必须
 
 
 def read_table(path: str, sheet=0) -> pd.DataFrame:
@@ -23,10 +23,10 @@ def read_table(path: str, sheet=0) -> pd.DataFrame:
         return pd.read_csv(path)
     try:
         return pd.read_excel(path, sheet_name=sheet)
-    except Exception:
+    except (ImportError, ValueError, KeyError):
         try:
             return pd.read_excel(path, sheet_name=sheet, engine="xlrd")
-        except Exception:
+        except (ImportError, ValueError, KeyError):
             return pd.read_excel(path, sheet_name=sheet, engine="openpyxl")
 
 
